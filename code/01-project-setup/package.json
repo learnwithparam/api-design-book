@@ -4,7 +4,7 @@
   "description": "(REST) HTTP API for micro tweets",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js --exec 'npm run lint:watch'",
+    "start": "nodemon server.js & npm run lint:watch",
     "lint:watch": "esw -w --color --cache ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

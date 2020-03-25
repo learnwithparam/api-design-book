@@ -39,8 +39,8 @@ For connecting to postgres, check the guide [here](https://www.enterprisedb.com/
 For running the final project,
 
 ```bash
-yarn # install the node modules
-yarn start # start the server locally on port 6060
+npm install # install the node modules
+npm start # start the server locally on port 6060
 ```
 
 ## Code for each chapter
