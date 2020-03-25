@@ -16,13 +16,6 @@ const port = process.env.PORT || 6060;
 // Create a HTTP server and using the express app
 const server = http.Server(app);
 
-console.log({
-  node_env: process.env.NODE_ENV,
-  port: process.env.PORT,
-  api_root_url: process.env.API_BASE_URL,
-  port_lowercase: process.env.port // Will be undefined
-});
-
 // Listen to the server at port 6060
 server.listen(port, () => {
   console.log(`Server listening on port: ${port}\n`);
