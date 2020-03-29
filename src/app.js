@@ -2,11 +2,14 @@
 const express = require('express');
 // Import middlewares
 const helmet = require('helmet');
+const cors = require('cors');
 
 // Initialize express app
 const app = express();
 
 app.use(helmet());
+// CORS middleware - Allow all origin
+app.use(cors());
 
 //  Middleware to Log request time
 app.use((req, res, next) => {
