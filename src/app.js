@@ -11,30 +11,81 @@ app.use(helmet());
 // CORS middleware - Allow all origin
 app.use(cors());
 
-//  Middleware to Log request time
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();
-  next();
-});
+// Sample tweet data stored in an array
+const tweets = [
+  {
+    id: '1111',
+    text: 'first tweet'
+  },
+  {
+    id: '1112',
+    text: 'second tweet'
+  },
+  {
+    id: '1113',
+    text: 'third tweet'
+  }
+];
 
-// A simple delay function
-const delay = (ms) => new Promise((resolve) => setTimeout(() => resolve(), ms));
-
-// Return request time from the middleware
-app.get('/request-time', async (req, res) => {
-  // Call a 3 second delay between response
-  await delay(3000);
-
-  res.send({
-    requestTime: req.requestTime,
-    responseTime: new Date().toISOString()
+// GET endpoint to get all tweets
+app.get('/get-all', (req, res) => {
+  // Sending the data as JSON
+  return res.json({
+    data: tweets
   });
 });
 
-// Return Hello World on root URL (i.e., '/')
-app.get('/', (req, res) => {
-  const name = 'Afrin';
-  return res.send(`Hello ${name}, How are you doing today?`);
+// GET endpoint to get a tweet by ID
+app.get('/get', (req, res) => {
+  // Read the ID value from query string
+  const id = req.query.id;
+
+  // Check whether ID is passed, else send a error message
+  if (!id) {
+    return res.json({
+      error: 'ID query string is mandatory!'
+    });
+  }
+
+  // Get the tweet from array based on ID value
+  const filteredTweet = tweets.filter((tweet) => {
+    return tweet.id === id;
+  });
+
+  // If there is no matched tweet, then send a error response
+  if (filteredTweet.length === 0) {
+    return res.json({
+      error: 'No matched tweet!'
+    });
+  }
+
+  // If there is a matched tweet, send it as response
+  return res.json({
+    data: filteredTweet[0] // Send the matched tweet object
+  });
+});
+
+// GET endpoint to get a tweet by ID
+app.get('/get/:id', (req, res) => {
+  // Read the ID value from URL params
+  const id = req.params.id;
+
+  // Get the tweet from array based on ID value
+  const filteredTweet = tweets.filter((tweet) => {
+    return tweet.id === id;
+  });
+
+  // If there is no matched tweet, then send a error response
+  if (filteredTweet.length === 0) {
+    return res.json({
+      error: 'No matched tweet!'
+    });
+  }
+
+  // If there is a matched tweet, send it as response
+  return res.json({
+    data: filteredTweet[0] // Send the matched tweet object
+  });
 });
 
 // Export express app as Module
