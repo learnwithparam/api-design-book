@@ -3,6 +3,7 @@ const express = require('express');
 // Import middlewares
 const helmet = require('helmet');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 // Initialize express app
 const app = express();
@@ -10,6 +11,11 @@ const app = express();
 app.use(helmet());
 // CORS middleware - Allow all origin
 app.use(cors());
+
+// Body parser to parse URL encoded data
+app.use(bodyParser.urlencoded({ extended: false }));
+// Body parser to parse JSON body content
+app.use(bodyParser.json());
 
 // Sample tweet data stored in an array
 const tweets = [
@@ -85,6 +91,29 @@ app.get('/get/:id', (req, res) => {
   // If there is a matched tweet, send it as response
   return res.json({
     data: filteredTweet[0] // Send the matched tweet object
+  });
+});
+
+// Post a new tweet
+app.post('/post', (req, res) => {
+  // Read tweet data from the request body
+  const tweet = req.body;
+
+  // Validate the tweet data
+  if (!tweet.text) {
+    return res.json({ error: 'tweet text is mandatory' });
+  }
+
+  // Generate a 4 digit random ID number
+  const id = `${Math.floor(1000 + Math.random() * 9000)}`;
+
+  // Update tweets array with new tweet
+  const newTweet = { ...tweet, id };
+  tweets.push(newTweet);
+
+  // Send the new tweet as response
+  res.json({
+    data: newTweet
   });
 });
 
