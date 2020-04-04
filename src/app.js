@@ -117,5 +117,61 @@ app.post('/post', (req, res) => {
   });
 });
 
+// Update a tweet
+app.put('/put/:id', (req, res) => {
+  // Read tweet data from the request body
+  const tweet = req.body;
+
+  // Get the ID from URL params
+  const id = req.params.id;
+
+  // Validate the tweet data
+  if (!tweet.text) {
+    return res.json({ error: 'tweet text is mandatory' });
+  }
+
+  // Find the tweet index based on `id` value in the tweets array
+  const tweetIndex = tweets.findIndex((tweet) => {
+    return tweet.id === id;
+  });
+
+  // Check whether tweet index is valid
+  if (tweetIndex === -1) {
+    return res.json({ error: `tweet with id (${id}) not found` });
+  }
+
+  // Update the tweet using tweetIndex
+  tweets[tweetIndex].text = tweet.text;
+
+  // Send the updated tweet as response
+  res.json({
+    data: tweets[tweetIndex]
+  });
+});
+
+// Delete a tweet
+app.delete('/delete/:id', (req, res) => {
+  // Get the ID from URL params
+  const id = req.params.id;
+
+  // Find the tweet index based on `id` value in the tweets array
+  const tweetIndex = tweets.findIndex((tweet) => {
+    return tweet.id === id;
+  });
+
+  // Check whether tweet index is valid
+  if (tweetIndex === -1) {
+    return res.json({ error: `tweet with id (${id}) not found` });
+  }
+
+  // Delete the tweet using tweetIndex
+  tweets.splice(tweetIndex, 1);
+
+  // Send the updated tweet as response
+  res.json({
+    message: `tweet with id (${id}) removed successfully`
+  });
+});
+
 // Export express app as Module
 module.exports = app;
