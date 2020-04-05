@@ -173,26 +173,5 @@ app.delete('/delete/:id', (req, res) => {
   });
 });
 
-// Read Request Header
-app.get('/request-header', (req, res) => {
-  const requestTime = req.headers['request-time'];
-
-  res.json({
-    data: `Request time through the request header (${requestTime})`
-  });
-});
-
-// Set Response Header
-app.get('/response-header', (req, res) => {
-  const responseTime = new Date();
-
-  // Set the `response-time` in http header
-  res.setHeader('response-time', responseTime);
-
-  res.json({
-    data: `Request time through the request header (${responseTime})`
-  });
-});
-
 // Export express app as Module
 module.exports = app;
